@@ -11,9 +11,6 @@
         <el-form-item label="商品名称"
           ><el-input style="max-width: 200px; margin-right: 30px"
         /></el-form-item>
-        <el-form-item label="商品名称"
-          ><el-input style="max-width: 200px; margin-right: 10px"
-        /></el-form-item>
         <el-button type="primary" :icon="Search">搜索</el-button>
         <el-button :icon="Refresh">重置</el-button>
       </el-form>
@@ -22,15 +19,23 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column type="index" width="80" label="序号" />
         <el-table-column prop="OrderNum" label="订单编号" width="180" />
+        <el-table-column prop="productName" label="商品名称" width="200" />
         <el-table-column prop="points" label="消耗积分" width="180"  />
         <el-table-column prop="time" label="兑换时间" />
       </el-table>
       <div class="example-pagination-block">
         <el-pagination
-          layout="prev, pager, next"
-          :total="totalNum"
-          @current-change="handleCurrentChange"
-        />
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[10, 20, 30, 40]"
+        :size="size"
+        :disabled="disabled"
+        :background="background"
+        layout="sizes, prev, pager, next"
+        :total="40"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
       </div>
     </div>
   </div>
@@ -44,28 +49,32 @@ const tableData = ref([
   {
     time: '2016-05-03 08:14:26',
     OrderNum: '855459112',
+    productName:'小熊纳豆米酒酸奶机',
     points: '1800',
     address:''
   },
   {
     time: '2016-05-02 15:55:07',
     OrderNum: '851261115',
+    productName:'旅行茶具套装便携式',
     points: '900'
   }
 ])
-const totalNum = ref(50) //分页条数
-const handleCurrentChange = (val) => {
-  // 上下一页
-  console.log(val)
-  //
-  // const data = {
-  //   page: val,
-  //   pageSize: 10
-  // }
-  // Getlist2401(data).then((res) => {
-  //   tableData.value = res.data.data.list //表格数据
-  // })
+
+
+// 分页
+const currentPage = ref(1)
+const pageSize = ref(10)
+const size = ref('default')
+const background = ref(false)
+const disabled = ref(false)
+const handleSizeChange = (val) => {
+  console.log(`${val} items per page`)
 }
+const handleCurrentChange = (val) => {
+  console.log(`current page: ${val}`)
+}
+
 </script>
 
 <style scoped>

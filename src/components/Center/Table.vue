@@ -76,13 +76,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { reactive, ref } from 'vue'
-// import { get, post, del, put } from "../../utils/request";
-import { Search } from '@element-plus/icons-vue'
-import { Plus } from '@element-plus/icons-vue'
-import { Delete } from '@element-plus/icons-vue'
-import { Edit } from '@element-plus/icons-vue'
+import { Search, Plus, Delete, Edit } from '@element-plus/icons-vue'
+// import { Plus } from '@element-plus/icons-vue'
+// import { Delete } from '@element-plus/icons-vue'
+// import { Edit } from '@element-plus/icons-vue'
 
 // 演示地址
 // 默认对话框关闭状态
@@ -157,9 +156,7 @@ const globalIndex = ref(-1)
 
 // 搜索（通过name值查找）//存在bug！！！
 const handleQueryName = async () => {
-  const result = tableData.value.filter(
-    (item: any) => item.name === tableForm.name
-  )
+  const result = tableData.value.filter((item) => item.name === tableForm.name)
   tableData.value = result
 }
 // 新增
@@ -171,12 +168,12 @@ const handleAdd = async () => {
   tableForm = reactive({ name: '', phone: '', district: '', address: '' })
 }
 // 删除一条数据(但是现在是删除全部对象)
-const handleRowDel = async (index: any) => {
+const handleRowDel = async (index) => {
   // 从index位置开始，删除一行即可
   tableData.value.splice(index, 1)
 }
 // 编辑
-const handleEdit = (row: any, index: any) => {
+const handleEdit = (row, index) => {
   // Object.assign拷贝赋值到表单
   const newobj = Object.assign({}, row)
   tableForm = reactive(newobj)

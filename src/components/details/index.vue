@@ -130,7 +130,7 @@ const dialogFormVisible1 = () => {
     message: '提交成功',
     type: 'success'
   })
-  console.log(clickedValue.value)
+  // console.log(clickedValue.value)
 
   const form = ref({})
   router.push('/myexchange')

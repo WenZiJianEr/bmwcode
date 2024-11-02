@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HomeNav @updateData="handleDataFromChild"></HomeNav>
     <div class="cardbox">
       <el-card style="width: 260px; height: 400px" v-for="item in List">
         <img :src="item.picurl" style="width: 100%; height: 280px" />
@@ -15,15 +16,31 @@
         <div class="hot xtcss" v-if="item.hot">最热</div>
         <div class="new xtcss" v-if="item.new">新品</div>
       </el-card>
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[8]"
+        :size="size"
+        :disabled="disabled"
+        :background="background"
+        layout="sizes, prev, pager, next"
+        :total="40"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
+
+    <div></div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
+import HomeNav from '@/components/Home/Nav.vue'
 const router = useRouter()
-const List = ref([ // 数据列表（请求数据替换）
+const List1 = ref([
+  // 数据列表（请求数据替换）
   {
     title: '小熊纳豆米酒酸奶机',
     points: '900',
@@ -113,8 +130,127 @@ const List = ref([ // 数据列表（请求数据替换）
     needpoints: 1803
   }
 ])
+const List2 = ref([
+  {
+    title: '小熊纳豆米酒酸奶机',
+    points: '1900',
+    picurl: '',
+    id: '1',
+    picurl:
+      'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    hot: true,
+    new: false,
+    needpoints: 1800
+  },
+  {
+    title: '玻璃茶壶泡茶',
+    points: '2900',
+    picurl: '',
+    id: '2',
+    picurl:
+      'https://img.alicdn.com/imgextra/i3/2212034690441/O1CN01rZk2RD1F81W6wxzgB_!!2212034690441.jpg',
+    hot: true,
+    new: false,
+    needpoints: 1801
+  },
+  {
+    title: '旅行茶具套装便携式',
+    points: '3900',
+    picurl: '',
+    id: '3',
+    picurl:
+      'https://img.alicdn.com/imgextra/i2/2850801197/O1CN01BWDrZS1KiGuuhJInM_!!2850801197.jpg',
+    hot: true,
+    new: false,
+    needpoints: 1802
+  }
+])
+const List3 = ref([
+  {
+    title: '小熊纳豆米酒酸奶机',
+    points: '1900',
+    picurl: '',
+    id: '1',
+    picurl:
+      'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+    hot: false,
+    new: true,
+    needpoints: 1800
+  },
+  {
+    title: '玻璃茶壶泡茶',
+    points: '2900',
+    picurl: '',
+    id: '2',
+    picurl:
+      'https://img.alicdn.com/imgextra/i3/2212034690441/O1CN01rZk2RD1F81W6wxzgB_!!2212034690441.jpg',
+    hot: false,
+    new: true,
+    needpoints: 1801
+  },
+  {
+    title: '旅行茶具套装便携式',
+    points: '3900',
+    picurl: '',
+    id: '3',
+    picurl:
+      'https://img.alicdn.com/imgextra/i2/2850801197/O1CN01BWDrZS1KiGuuhJInM_!!2850801197.jpg',
+    hot: false,
+    new: true,
+    needpoints: 1802
+  },
+  {
+    title: '旅行茶具套装便携式',
+    points: '3900',
+    picurl: '',
+    id: '3',
+    picurl:
+      'https://img.alicdn.com/imgextra/i2/2850801197/O1CN01BWDrZS1KiGuuhJInM_!!2850801197.jpg',
+    hot: false,
+    new: true,
+    needpoints: 1802
+  }
+])
+const List = ref([])
+
+const props = defineProps({
+  parentData: String
+})
+
+const lshow = ref(1)
+
+const dataFromChild = ref(1)
+const handleDataFromChild = (data) => {
+  dataFromChild.value = data
+  Listshow()
+}
+
+const Listshow = () => {
+  lshow.value = dataFromChild.value
+  if (lshow.value == 1) {
+    List.value = List1.value
+  } else if (lshow.value == 2) {
+    List.value = List2.value
+  } else {
+    List.value = List3.value
+  }
+}
+Listshow()
 const handleClick = (item) => {
-  router.push({ path: '/details', query: { id: item.id } })    // 兑换按钮，携带id跳转页面
+  router.push({ path: '/details', query: { id: item.id } }) // 兑换按钮，携带id跳转页面
+}
+
+// 分页
+const currentPage = ref(1)
+const pageSize = ref(8)
+const size = ref('default')
+const background = ref(false)
+const disabled = ref(false)
+const handleSizeChange = (val) => {
+  console.log(`${val} items per page`)
+}
+const handleCurrentChange = (val) => {
+  console.log(`current page: ${val}`)
 }
 </script>
 
@@ -159,6 +295,6 @@ const handleClick = (item) => {
 .points {
   display: flex;
   align-items: center;
-  color: #eebe77
+  color: #eebe77;
 }
 </style>
